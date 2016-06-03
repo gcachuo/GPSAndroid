@@ -16,7 +16,7 @@ if (isset($_POST["ajaxAccion"])) {
             echo ingresar();
             break;
         case "logout":
-            echo logout();
+            logout();
             break;
     }
 }
@@ -40,13 +40,13 @@ function ingresar()
         return "Llene todos los campos";
     }
 
-    $sql = $bd->consulta("select count(*) cuenta from usuario where nombre_usuario='$user' and pass_usuario='$pass'");
+    $sql = $bd->consulta("select id_usuario id from usuario where nombre_usuario='$user' and pass_usuario='$pass'");
     $consulta = $bd->siguiente($sql);
     if ($consulta == null) {
         return "Error al ingresar";
     }
-    if ($consulta["cuenta"] > 0) {
-        $_SESSION["usuario"] = $user;
+    if ($sql->num_rows > 0) {
+        $_SESSION["usuario"] = $consulta["id"];
         return "true";
     }
 

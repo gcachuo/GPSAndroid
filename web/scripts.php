@@ -38,4 +38,16 @@
             }
         )
     }
+    function cargarCoordenadas(id) {
+        $.post(
+            "ajax.php",
+            {
+                ajaxAccion: "cargarCoordenadas",
+                id: id
+            },
+            function (out) {
+
+            }
+        );
+    }
 </script>

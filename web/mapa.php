@@ -12,4 +12,8 @@ if(!isset($_SESSION)){
 <form id="frmMapa" action="index.php" method="post">
     <a class="btn btn-default" onclick="logout()">Cerrar Sesión</a>
 </form>
-Hola mapa
+<script>
+    $(function(){
+        cargarCoordenadas(<?php echo $_SESSION["usuario"]?>);
+    })
+</script>
