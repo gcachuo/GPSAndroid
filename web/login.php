@@ -5,6 +5,9 @@
  * Date: 03/jun/2016
  * Time: 03:19 PM
  */
+if(!isset($_SESSION)){
+    header('Location: index.php');
+}
 ?>
 <form id="frmLogin" action="index.php" method="post">
     <input type="hidden" value="mapa" name="mod">

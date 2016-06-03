@@ -16,13 +16,16 @@ session_start();
 
 <?php
 
-if(!isset($_SESSION["usuario"])) {
+if (!isset($_SESSION["usuario"])) {
     include "login.php";
-}
-else{
-    switch ($_POST["mod"]){
+} else {
+    $_SESSION["mod"] = isset($_POST["mod"]) ? $_POST["mod"] : $_SESSION["mod"];
+    switch ($_SESSION["mod"]) {
         case "mapa":
             include "mapa.php";
+            break;
+        default:
+            include "login.php";
             break;
     }
 }

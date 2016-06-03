@@ -27,4 +27,15 @@
                 $("#btnIngresar").attr("disabled", false);
             });
     }
+    function logout() {
+        $.post(
+            "ajax.php",
+            {
+                ajaxAccion: "logout"
+            },
+            function (out) {
+                $("#frmMapa").submit();
+            }
+        )
+    }
 </script>

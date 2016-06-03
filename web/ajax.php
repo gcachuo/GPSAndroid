@@ -15,6 +15,9 @@ if (isset($_POST["ajaxAccion"])) {
         case "ingresar":
             echo ingresar();
             break;
+        case "logout":
+            echo logout();
+            break;
     }
 }
 
@@ -48,6 +51,9 @@ function ingresar()
     }
 
     return "Datos Incorrectos";
+}
+function logout(){
+    session_destroy();
 }
 
 ?>
