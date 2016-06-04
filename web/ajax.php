@@ -21,6 +21,12 @@ if (isset($_POST["ajaxAccion"])) {
         case "cargarCoordenadas":
             echo cargarCoordenadas();
             break;
+        case "cargarUsuarios":
+            echo cargarUsuarios();
+            break;
+        case "focusMarker":
+            $_SESSION["marker"] = $_POST["id"];
+            break;
     }
 }
 
@@ -64,18 +70,31 @@ function logout()
 function cargarCoordenadas()
 {
     global $bd;
-    $id=$_POST["id"];
+    $id = isset($_SESSION["marker"]) ? $_SESSION["marker"] : $_POST["id"];
     $coord = array();
 
-    $consulta = $bd->consulta("SELECT id_usuario id, latitud_coordenada lat, longitud_coordenada lng FROM coordenada ORDER BY hora_coordenada DESC ");
+    $consulta = $bd->consulta("SELECT id_usuario id, latitud_coordenada lat, longitud_coordenada lng FROM coordenada ORDER BY FIELD(id_usuario, $id) ASC ");
 
-    foreach($consulta as $reg){
-        $coord['id'.$reg["id"]]["nombre"] = $bd->siguiente($bd->consulta("SELECT nombre_usuario nombre FROM usuario where id_usuario=".$reg["id"]))["nombre"];
-        $coord['id'.$reg["id"]]["lat"] = $reg["lat"] * 1;
-        $coord['id'.$reg["id"]]["lng"] = $reg["lng"] * 1;
+    foreach ($consulta as $reg) {
+        $coord['id' . $reg["id"]]["nombre"] = $bd->siguiente($bd->consulta("SELECT nombre_usuario nombre FROM usuario WHERE id_usuario=" . $reg["id"]))["nombre"];
+        $coord['id' . $reg["id"]]["lat"] = $reg["lat"] * 1;
+        $coord['id' . $reg["id"]]["lng"] = $reg["lng"] * 1;
     }
 
     return json_encode($coord);
+}
+
+function cargarUsuarios()
+{
+
+    global $bd;
+    $usuarios = "";
+    $consulta = $bd->consulta("SELECT * FROM usuario");
+    foreach ($consulta as $reg) {
+        $usuarios .= '<a class="btn btn-default" onclick="focusMarker(' . $reg["id_usuario"] . ')">' . $reg["nombre_usuario"] . '</a> ';
+    }
+
+    return $usuarios;
 }
 
 ?>

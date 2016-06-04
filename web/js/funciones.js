@@ -75,3 +75,26 @@ function setMarker(label, myLatLng) {
     marker.setMap(map);
     map.setCenter(marker.getPosition());
 }
+function cargarUsuarios(){
+    $.post(
+        "ajax.php",
+        {
+            ajaxAccion: "cargarUsuarios"
+        },
+        function (out) {
+            $("#users").html(out);
+        }
+    )
+}
+function focusMarker(id) {
+    $.post(
+        "ajax.php",
+        {
+            ajaxAccion: "focusMarker",
+            id:id
+        },
+        function (out) {
+            cargarCoordenadas(id);
+        }
+    )
+}
