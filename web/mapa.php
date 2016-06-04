@@ -5,7 +5,7 @@
  * Date: 03/jun/2016
  * Time: 04:45 PM
  */
-if(!isset($_SESSION)){
+if (!isset($_SESSION)) {
     header('Location: index.php');
 }
 ?>
@@ -13,7 +13,12 @@ if(!isset($_SESSION)){
     <a class="btn btn-default" onclick="logout()">Cerrar Sesión</a>
 </form>
 <script>
-    $(function(){
-        cargarCoordenadas(<?php echo $_SESSION["usuario"]?>);
-    })
+    $(function () {
+        initMap();
+        cargarCoordenadas(<?php echo $_SESSION["usuario"]?>)
+        setInterval(function () {
+            cargarCoordenadas(<?php echo $_SESSION["usuario"]?>)
+        }, 5000);
+    });
 </script>
+<div id="map"></div>

@@ -1,6 +1,11 @@
-h3{
+h3 {
     text-align: center;
 }
-.row{
+
+.row {
     padding-bottom: 20px;
+}
+
+#map {
+    height: 83vh;
 }

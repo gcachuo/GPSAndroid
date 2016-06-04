@@ -10,6 +10,7 @@ session_start();
 <html>
 <head>
     <title>GPS Android</title>
+    <?php include "scripts.php" ?>
 </head>
 <body>
 <h3>GPS Android</h3>
@@ -30,6 +31,5 @@ if (!isset($_SESSION["usuario"])) {
     }
 }
 ?>
-<?php include "scripts.php" ?>
 </body>
 </html>

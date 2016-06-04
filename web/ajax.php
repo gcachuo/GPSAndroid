@@ -18,6 +18,9 @@ if (isset($_POST["ajaxAccion"])) {
         case "logout":
             logout();
             break;
+        case "cargarCoordenadas":
+            echo cargarCoordenadas();
+            break;
     }
 }
 
@@ -52,8 +55,24 @@ function ingresar()
 
     return "Datos Incorrectos";
 }
-function logout(){
+
+function logout()
+{
     session_destroy();
+}
+
+function cargarCoordenadas()
+{
+    global $bd;
+    $id=$_POST["id"];
+    $coord = array();
+
+    $consulta = $bd->siguiente($bd->consulta("SELECT latitud_coordenada lat, longitud_coordenada lng FROM coordenada where id_usuario=$id ORDER BY hora_coordenada DESC "));
+    $coord["nombre"] = $bd->siguiente($bd->consulta("SELECT nombre_usuario nombre FROM usuario"))["nombre"];
+    $coord["lat"] = $consulta["lat"] * 1;
+    $coord["lng"] = $consulta["lng"] * 1;
+
+    return json_encode($coord);
 }
 
 ?>
