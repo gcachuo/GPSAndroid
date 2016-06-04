@@ -67,10 +67,13 @@ function cargarCoordenadas()
     $id=$_POST["id"];
     $coord = array();
 
-    $consulta = $bd->siguiente($bd->consulta("SELECT latitud_coordenada lat, longitud_coordenada lng FROM coordenada where id_usuario=$id ORDER BY hora_coordenada DESC "));
-    $coord["nombre"] = $bd->siguiente($bd->consulta("SELECT nombre_usuario nombre FROM usuario"))["nombre"];
-    $coord["lat"] = $consulta["lat"] * 1;
-    $coord["lng"] = $consulta["lng"] * 1;
+    $consulta = $bd->consulta("SELECT id_usuario id, latitud_coordenada lat, longitud_coordenada lng FROM coordenada ORDER BY hora_coordenada DESC ");
+
+    foreach($consulta as $reg){
+        $coord['id'.$reg["id"]]["nombre"] = $bd->siguiente($bd->consulta("SELECT nombre_usuario nombre FROM usuario where id_usuario=".$reg["id"]))["nombre"];
+        $coord['id'.$reg["id"]]["lat"] = $reg["lat"] * 1;
+        $coord['id'.$reg["id"]]["lng"] = $reg["lng"] * 1;
+    }
 
     return json_encode($coord);
 }

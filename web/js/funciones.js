@@ -48,8 +48,11 @@ function cargarCoordenadas(id) {
         function (out) {
             var obj = JSON.parse(out);
 
-            var myLatLng = {lat: obj.lat, lng: obj.lng};
-            setMarker(obj.nombre, myLatLng);
+            $.each(obj,function (index,value) {
+                var myLatLng = {lat: value.lat, lng: value.lng};
+                setMarker(value.nombre, myLatLng);
+            });
+
         }
     )
 }
