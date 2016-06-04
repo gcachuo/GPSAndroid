@@ -49,17 +49,21 @@ function ingresar()
         return "Llene todos los campos";
     }
 
-    $sql = $bd->consulta("select id_usuario id from usuario where nombre_usuario='$user' and pass_usuario='$pass'");
+    $txt="select id_usuario id, nivel_usuario nivel from usuario where nombre_usuario='$user' and pass_usuario='$pass'";
+    $sql = $bd->consulta($txt);
     $consulta = $bd->siguiente($sql);
     if ($consulta == null) {
-        return "Error al ingresar";
+        return "Datos Incorrectos";
+    }
+    if($consulta["nivel"]!=1){
+        return "No puedes acceder con esta cuenta. Contacta al administrador";
     }
     if ($sql->num_rows > 0) {
         $_SESSION["usuario"] = $consulta["id"];
         return "true";
     }
 
-    return "Datos Incorrectos";
+    return "Error general";
 }
 
 function logout()
