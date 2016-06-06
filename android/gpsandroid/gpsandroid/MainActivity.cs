@@ -26,7 +26,7 @@ namespace gpsandroid
 			Button button = FindViewById<Button> (Resource.Id.myButton);
 			
 			button.Click += delegate {
-				button.Text = string.Format ("{0} clicks!", count++);
+				SetContentView(Resource.Layout.gps);
 			};
 		}
 	}
