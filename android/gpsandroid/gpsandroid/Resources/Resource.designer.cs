@@ -61,7 +61,7 @@ namespace gpsandroid
 		{
 			
 			// aapt resource value: 0x7f050000
-			public const int lblMysql = 2131034112;
+			public const int btnEnviar = 2131034112;
 			
 			// aapt resource value: 0x7f050005
 			public const int myButton = 2131034117;

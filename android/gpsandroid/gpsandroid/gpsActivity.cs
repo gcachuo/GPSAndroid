@@ -21,10 +21,25 @@ namespace gpsandroid
 			base.OnCreate (bundle);
 
 			SetContentView (Resource.Layout.gps);
-			TextView lblMysql = FindViewById<TextView> (Resource.Id.lblMysql);
+			Button btnEnviar = FindViewById<Button> (Resource.Id.btnEnviar);
 			var bd = new bd ();
 
-			//lblMysql.Text = bd.GetAccountCountFromMySQL();
+			btnEnviar.Click += delegate {
+				try {
+					enviarCoordenadas ();
+				} catch (Exception ex) {
+					new AlertDialog.Builder (this)
+						.SetNeutralButton ("Ok", (sender, args) => {
+						// User pressed yes
+					})
+						.SetMessage (ex.Message)
+						.SetTitle ("Error")
+						.Show ();
+				}
+			};
+		}
+		void enviarCoordenadas(){
+		
 		}
 	}
 }

@@ -35,14 +35,16 @@ namespace gpsandroid
 					var user = txtUser.Text;
 					var pass = txtPass.Text;
 
-					var result = login (user,pass,conexion);
-					if(result)
-					StartActivity (typeof(gpsActivity));
-					else{
+					var id = login (user, pass, conexion);
+					if (id != "false") {
+						var activity2 = new Intent (this, typeof(gpsActivity));
+						activity2.PutExtra ("id_usuario", id);
+						StartActivity (activity2);
+					} else {
 						new AlertDialog.Builder (this)
 							.SetNeutralButton ("Ok", (sender, args) => {
-								// User pressed yes
-							})
+							// User pressed yes
+						})
 							.SetMessage ("Datos Incorrectos")
 							.SetTitle ("Error")
 							.Show ();
@@ -50,8 +52,8 @@ namespace gpsandroid
 				} catch (Exception ex) {
 					new AlertDialog.Builder (this)
 						.SetNeutralButton ("Ok", (sender, args) => {
-							// User pressed yes
-						})
+						// User pressed yes
+					})
 						.SetMessage (ex.Message)
 						.SetTitle ("Error")
 						.Show ();
@@ -60,24 +62,20 @@ namespace gpsandroid
 			};
 		}
 
-		bool login (string user, string pass, MySqlConnection conexion)
+		string login (string user, string pass, MySqlConnection conexion)
 		{
 			try {
 				
 				conexion.Open ();
-				string queryString = "select count(0) from usuario where nombre_usuario='"+user+"' and pass_usuario='"+pass+"'";
+				string queryString = "select id_usuario id from usuario where nombre_usuario='" + user + "' and pass_usuario='" + pass + "'";
 				MySqlCommand sqlcmd = new MySqlCommand (queryString, conexion);
 				String result = sqlcmd.ExecuteScalar ().ToString ();
 				conexion.Close ();
-
-				if (int.Parse(result) > 0) {
-					return true;
-				} else {
-					return false;
-				}
+				return result;
 			} catch (Exception ex) {
 				var result = ex.Message;
-				return false;
+				conexion.Close ();
+				return "false";
 			}
 		}
 	}
