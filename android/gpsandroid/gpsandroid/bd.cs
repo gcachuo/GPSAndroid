@@ -23,13 +23,20 @@ namespace gpsandroid
 				
 			}
 		}
-		public bool Update(){
-			conexion ().Open ();
-			/*string queryString = "select count(0) from usuario where nombre_usuario='"+user+"' and pass_usuario='"+pass+"'";
-			MySqlCommand sqlcmd = new MySqlCommand (queryString, conexion);
-			String result = sqlcmd.ExecuteScalar ().ToString ();*/
-			conexion ().Close ();
-			return false;
+		public bool Update(string id,double lat, double lng){
+			var conn = conexion ();
+			try{
+			conn.Open ();
+			string queryString = "UPDATE coordenada set latitud_coordenada="+lat+", longitud_coordenada="+lng+" where id_usuario="+id;
+			MySqlCommand sqlcmd = new MySqlCommand (queryString, conn);
+			sqlcmd.ExecuteNonQuery ();
+			conn.Close ();
+			return true;
+			}
+			catch(Exception ex){
+				var result = ex.Message;
+				return false;
+			}
 		}
 	}
 }

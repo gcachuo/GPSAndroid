@@ -10,23 +10,76 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Android.Locations;
+using System.Threading.Tasks;
 
 namespace gpsandroid
 {
 	[Activity (Label = "gpsActivity")]			
-	public class gpsActivity : Activity
+	public class gpsActivity : Activity, ILocationListener
 	{
+		Location _currentLocation;
+		LocationManager _locationManager;
+		string _locationProvider;
+		TextView lblEstatus;
+		string id;
+
+		protected override void OnPause()
+		{
+			base.OnPause();
+			_locationManager.RemoveUpdates(this);
+		}
+
+		protected override void OnResume()
+		{
+			base.OnResume();
+			_locationManager.RequestLocationUpdates(_locationProvider, 0, 0, this);
+		}
+
+		public async void OnLocationChanged(Location location)
+		{
+			_currentLocation = location;
+			if (_currentLocation == null)
+			{
+				lblEstatus.Text = "Unable to determine your location. Try again in a short while.";
+			}
+			else
+			{
+				lblEstatus.Text = string.Format("{0:f6},{1:f6}", _currentLocation.Latitude, _currentLocation.Longitude);
+				enviarCoordenadas (id);
+				//Address address = await ReverseGeocodeCurrentLocation();
+				//DisplayAddress(address);
+			}
+		}
+
+		public void OnProviderDisabled(string provider) {}
+
+		public void OnProviderEnabled(string provider) {}
+
+		public void OnStatusChanged(string provider, Availability status, Bundle extras) {}
+
 		protected override void OnCreate (Bundle bundle)
 		{
 			base.OnCreate (bundle);
 
+			InitializeLocationManager();
+
 			SetContentView (Resource.Layout.gps);
+			id = Intent.GetStringExtra ("id_usuario") ?? "Id no disponible";
 			Button btnEnviar = FindViewById<Button> (Resource.Id.btnEnviar);
+			lblEstatus = FindViewById<TextView> (Resource.Id.lblEstatus);
 			var bd = new bd ();
 
 			btnEnviar.Click += delegate {
+				lblEstatus.Text="";
 				try {
-					enviarCoordenadas ();
+					var result=enviarCoordenadas (id);
+					if(result){
+						//lblEstatus.Text="Enviadas Correctamente";
+					}
+					else{
+						lblEstatus.Text="Error al enviar";
+					}
 				} catch (Exception ex) {
 					new AlertDialog.Builder (this)
 						.SetNeutralButton ("Ok", (sender, args) => {
@@ -38,8 +91,66 @@ namespace gpsandroid
 				}
 			};
 		}
-		void enviarCoordenadas(){
-		
+		bool enviarCoordenadas(string id){
+			var bd = new bd ();
+			return bd.Update (id,_currentLocation.Latitude,_currentLocation.Longitude);
+		}
+
+		async void getCoordenadas(){
+			if (_currentLocation == null)
+			{
+				lblEstatus.Text = "Can't determine the current address. Try again in a few minutes.";
+				return;
+			}
+
+			//Address address = await ReverseGeocodeCurrentLocation();
+			//DisplayAddress (address);
+		}
+
+		/*void DisplayAddress(Address address)
+		{
+			if (address != null)
+			{
+				StringBuilder deviceAddress = new StringBuilder();
+				for (int i = 0; i < address.MaxAddressLineIndex; i++)
+				{
+					deviceAddress.AppendLine(address.GetAddressLine(i));
+				}
+				// Remove the last comma from the end of the address.
+				lblEstatus.Text = deviceAddress.ToString();
+			}
+			else
+			{
+				lblEstatus.Text = "Unable to determine the address. Try again in a few minutes.";
+			}
+		}*/
+
+		async Task<Address> ReverseGeocodeCurrentLocation()
+		{
+			Geocoder geocoder = new Geocoder(this);
+			IList<Address> addressList =
+				await geocoder.GetFromLocationAsync(_currentLocation.Latitude, _currentLocation.Longitude, 10);
+
+			Address address = addressList.FirstOrDefault();
+			return address;
+		}
+
+		void InitializeLocationManager(){
+			_locationManager = (LocationManager) GetSystemService(LocationService);
+			Criteria criteriaForLocationService = new Criteria
+			{
+				Accuracy = Accuracy.Fine
+			};
+			IList<string> acceptableLocationProviders = _locationManager.GetProviders(criteriaForLocationService, true);
+
+			if (acceptableLocationProviders.Any())
+			{
+				_locationProvider = acceptableLocationProviders.First();
+			}
+			else
+			{
+				_locationProvider = string.Empty;
+			}
 		}
 	}
 }
