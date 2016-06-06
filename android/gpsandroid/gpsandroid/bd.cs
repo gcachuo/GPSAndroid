@@ -38,6 +38,21 @@ namespace gpsandroid
 				return false;
 			}
 		}
+		public bool Insert(string id,double lat, double lng){
+			var conn = conexion ();
+			try{
+				conn.Open ();
+				string queryString = "Insert into historial(id_usuario,latitud_historial,longitud_historial) values("+id+","+lat+","+lng+")";
+				MySqlCommand sqlcmd = new MySqlCommand (queryString, conn);
+				sqlcmd.ExecuteNonQuery ();
+				conn.Close ();
+				return true;
+			}
+			catch(Exception ex){
+				var result = ex.Message;
+				return false;
+			}
+		}
 	}
 }
 

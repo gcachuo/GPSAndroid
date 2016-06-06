@@ -23,6 +23,7 @@ namespace gpsandroid
 		string _locationProvider;
 		TextView lblEstatus;
 		string id;
+		Button btnEnviar;
 
 		protected override void OnPause()
 		{
@@ -34,6 +35,8 @@ namespace gpsandroid
 		{
 			base.OnResume();
 			_locationManager.RequestLocationUpdates(_locationProvider, 0, 0, this);
+			lblEstatus.Text = "Cargando...";
+			btnEnviar.Enabled = false;
 		}
 
 		public async void OnLocationChanged(Location location)
@@ -42,10 +45,12 @@ namespace gpsandroid
 			if (_currentLocation == null)
 			{
 				lblEstatus.Text = "Unable to determine your location. Try again in a short while.";
+				btnEnviar.Enabled = false;
 			}
 			else
 			{
 				lblEstatus.Text = string.Format("{0:f6},{1:f6}", _currentLocation.Latitude, _currentLocation.Longitude);
+				btnEnviar.Enabled = true;
 				enviarCoordenadas (id);
 				//Address address = await ReverseGeocodeCurrentLocation();
 				//DisplayAddress(address);
@@ -66,20 +71,23 @@ namespace gpsandroid
 
 			SetContentView (Resource.Layout.gps);
 			id = Intent.GetStringExtra ("id_usuario") ?? "Id no disponible";
-			Button btnEnviar = FindViewById<Button> (Resource.Id.btnEnviar);
+			btnEnviar = FindViewById<Button> (Resource.Id.btnEnviar);
 			lblEstatus = FindViewById<TextView> (Resource.Id.lblEstatus);
+			lblEstatus.Text = "Cargando...";
+			btnEnviar.Enabled = false;
 			var bd = new bd ();
 
 			btnEnviar.Click += delegate {
 				lblEstatus.Text="";
 				try {
-					var result=enviarCoordenadas (id);
+					var result=enviarHistorial (id);
 					if(result){
-						//lblEstatus.Text="Enviadas Correctamente";
+						lblEstatus.Text="Enviadas Correctamente";
 					}
 					else{
 						lblEstatus.Text="Error al enviar";
 					}
+					_locationManager.RequestLocationUpdates(_locationProvider, 0, 0, this);
 				} catch (Exception ex) {
 					new AlertDialog.Builder (this)
 						.SetNeutralButton ("Ok", (sender, args) => {
@@ -92,8 +100,14 @@ namespace gpsandroid
 			};
 		}
 		bool enviarCoordenadas(string id){
+			_locationManager.RequestLocationUpdates(_locationProvider, 0, 0, this);
 			var bd = new bd ();
 			return bd.Update (id,_currentLocation.Latitude,_currentLocation.Longitude);
+		}
+		bool enviarHistorial(string id){
+			_locationManager.RequestLocationUpdates(_locationProvider, 0, 0, this);
+			var bd = new bd ();
+			return bd.Insert (id,_currentLocation.Latitude,_currentLocation.Longitude);
 		}
 
 		async void getCoordenadas(){
