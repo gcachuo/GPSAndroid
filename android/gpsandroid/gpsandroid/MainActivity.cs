@@ -13,6 +13,7 @@ namespace gpsandroid
 	[Activity (Label = "gpsandroid", MainLauncher = true, Icon = "@drawable/icon")]
 	public class MainActivity : Activity
 	{
+		bd bd;
 		protected override void OnCreate (Bundle bundle)
 		{
 			base.OnCreate (bundle);
@@ -25,27 +26,43 @@ namespace gpsandroid
 			Button button = FindViewById<Button> (Resource.Id.myButton);
 			EditText txtUser = FindViewById<EditText> (Resource.Id.txtUser);
 			EditText txtPass = FindViewById<EditText> (Resource.Id.txtPass);
-			var bd = new bd ();
-			var conexion = bd.conexion ();
-
-
+			EditText txtip = FindViewById<EditText> (Resource.Id.txtip);
 
 			button.Click += delegate {
 				try {
-					var user = txtUser.Text;
-					var pass = txtPass.Text;
+					bd = new bd (txtip.Text);
+					var result = bd.conexion ();
+					if (result=="true") {
+						var conexion = bd.cnn;
+						button.Enabled = false;
+						var user = txtUser.Text;
+						var pass = txtPass.Text;
 
-					var id = login (user, pass, conexion);
-					if (id != "false") {
-						var activity2 = new Intent (this, typeof(gpsActivity));
-						activity2.PutExtra ("id_usuario", id);
-						StartActivity (activity2);
-					} else {
+
+						try {
+							var id = login (user, pass, conexion);
+							var activity2 = new Intent (this, typeof(gpsActivity));
+							activity2.PutExtra ("id_usuario", id);
+							activity2.PutExtra ("ip", txtip.Text);
+							StartActivity (activity2);
+						} catch(Exception ex) {
+							new AlertDialog.Builder (this)
+							.SetNeutralButton ("Ok", (sender, args) => {
+								// User pressed yes
+							})
+								.SetMessage (ex.Message)
+							.SetTitle ("Error")
+							.Show ();
+						}
+
+						button.Enabled = true;
+					}
+					else{
 						new AlertDialog.Builder (this)
 							.SetNeutralButton ("Ok", (sender, args) => {
-							// User pressed yes
-						})
-							.SetMessage ("Datos Incorrectos")
+								// User pressed yes
+							})
+							.SetMessage (result)
 							.SetTitle ("Error")
 							.Show ();
 					}
@@ -57,6 +74,8 @@ namespace gpsandroid
 						.SetMessage (ex.Message)
 						.SetTitle ("Error")
 						.Show ();
+
+					button.Enabled = true;
 				}
 				//lblMysql.Text="AAAAHHHH";
 			};
@@ -64,19 +83,12 @@ namespace gpsandroid
 
 		string login (string user, string pass, MySqlConnection conexion)
 		{
-			try {
-				
-				conexion.Open ();
+			conexion.Open ();
 				string queryString = "select id_usuario id from usuario where nombre_usuario='" + user + "' and pass_usuario='" + pass + "'";
 				MySqlCommand sqlcmd = new MySqlCommand (queryString, conexion);
 				String result = sqlcmd.ExecuteScalar ().ToString ();
-				conexion.Close ();
+			conexion.Close ();
 				return result;
-			} catch (Exception ex) {
-				var result = ex.Message;
-				conexion.Close ();
-				return "false";
-			}
 		}
 	}
 }

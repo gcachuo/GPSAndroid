@@ -23,7 +23,9 @@ namespace gpsandroid
 		string _locationProvider;
 		TextView lblEstatus;
 		string id;
+		string ip;
 		Button btnEnviar;
+		bd bd;
 
 		protected override void OnPause()
 		{
@@ -71,11 +73,17 @@ namespace gpsandroid
 
 			SetContentView (Resource.Layout.gps);
 			id = Intent.GetStringExtra ("id_usuario") ?? "Id no disponible";
+			ip = Intent.GetStringExtra ("ip") ?? "Ip no disponible";
 			btnEnviar = FindViewById<Button> (Resource.Id.btnEnviar);
 			lblEstatus = FindViewById<TextView> (Resource.Id.lblEstatus);
 			lblEstatus.Text = "Cargando...";
 			btnEnviar.Enabled = false;
-			var bd = new bd ();
+
+			bd= new bd(ip);
+			var resultBD = bd.conexion ();
+			if (resultBD!="true") {
+				lblEstatus.Text = resultBD;
+			}
 
 			btnEnviar.Click += delegate {
 				lblEstatus.Text="";
@@ -101,12 +109,10 @@ namespace gpsandroid
 		}
 		bool enviarCoordenadas(string id){
 			_locationManager.RequestLocationUpdates(_locationProvider, 0, 0, this);
-			var bd = new bd ();
 			return bd.Update (id,_currentLocation.Latitude,_currentLocation.Longitude);
 		}
 		bool enviarHistorial(string id){
 			_locationManager.RequestLocationUpdates(_locationProvider, 0, 0, this);
-			var bd = new bd ();
 			return bd.Insert (id,_currentLocation.Latitude,_currentLocation.Longitude);
 		}
 
