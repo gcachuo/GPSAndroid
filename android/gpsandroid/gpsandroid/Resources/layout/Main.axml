@@ -12,7 +12,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText1" />
+        android:id="@+id/txtUser" />
     <TextView
         android:text="Password"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -23,7 +23,7 @@
         android:inputType="textPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText2" />
+        android:id="@+id/txtPass" />
     <Button
         android:id="@+id/myButton"
         android:layout_width="match_parent"
