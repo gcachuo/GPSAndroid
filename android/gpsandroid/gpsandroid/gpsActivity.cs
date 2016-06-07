@@ -53,7 +53,9 @@ namespace gpsandroid
 			{
 				lblEstatus.Text = string.Format("{0:f6},{1:f6}", _currentLocation.Latitude, _currentLocation.Longitude);
 				btnEnviar.Enabled = true;
-				enviarCoordenadas (id);
+				if(!enviarCoordenadas (id)){
+					StartActivity (typeof(MainActivity));
+				}
 				//Address address = await ReverseGeocodeCurrentLocation();
 				//DisplayAddress(address);
 			}
@@ -94,6 +96,7 @@ namespace gpsandroid
 					}
 					else{
 						lblEstatus.Text="Error al enviar";
+						StartActivity (typeof(MainActivity));
 					}
 					_locationManager.RequestLocationUpdates(_locationProvider, 0, 0, this);
 				} catch (Exception ex) {
