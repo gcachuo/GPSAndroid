@@ -1,45 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget35"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
-    <TextView
-        android:text="Usuario"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView1" />
+    android:layout_height="fill_parent"
+    android:background="#ff6666ff">
     <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/txtUser"
-        android:text="Pau" />
+        android:layout_width="570px"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:layout_x="300px"
+        android:layout_y="250px"
+        android:text="Memo" />
     <TextView
+        android:id="@+id/widget32"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Usuario"
+        android:layout_x="360px"
+        android:layout_y="200px"
+        android:textColor="#ff000000" />
+    <TextView
+        android:id="@+id/widget33"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Password"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView2" />
+        android:layout_x="360px"
+        android:layout_y="400px"
+        android:textColor="#ff000000" />
     <EditText
-        android:inputType="textPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/txtPass"
-        android:text="pau" />
+        android:layout_width="570px"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:password="true"
+        android:layout_x="300px"
+        android:layout_y="450px"
+        android:text="cachu" />
     <TextView
+        android:id="@+id/widget34"
+        android:layout_width="123px"
+        android:layout_height="wrap_content"
         android:text="IP"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView3" />
+        android:layout_x="360px"
+        android:layout_y="600px"
+        android:textColor="#ff000000" />
     <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/txtip"
+        android:layout_width="570px"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:layout_x="300px"
+        android:layout_y="650px"
         android:text="192.168.42.237" />
     <Button
         android:id="@+id/myButton"
-        android:layout_width="match_parent"
+        android:layout_width="370px"
         android:layout_height="wrap_content"
-        android:text="@string/hello" />
-</LinearLayout>
+        android:background="#ff001261"
+        android:text="Ingresar"
+        android:typeface="sans"
+        android:layout_x="420px"
+        android:layout_y="900px"
+        android:textColor="#ffffffff" />
+</AbsoluteLayout>
