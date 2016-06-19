@@ -1,8 +1,8 @@
 ﻿<Properties StartupItem="gpsandroid\gpsandroid.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Android.442" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="gpsandroid\Properties\AndroidManifest.xml">
+  <MonoDevelop.Ide.Workbench ActiveDocument="gpsandroid\gpsActivity.cs">
     <Files>
-      <File FileName="gpsandroid\gpsActivity.cs" Line="77" Column="68" />
+      <File FileName="gpsandroid\gpsActivity.cs" Line="179" Column="5" />
       <File FileName="gpsandroid\MainActivity.cs" Line="1" Column="1" />
       <File FileName="gpsandroid\bd.cs" Line="1" Column="1" />
       <File FileName="gpsandroid\Properties\AssemblyInfo.cs" Line="1" Column="1" />

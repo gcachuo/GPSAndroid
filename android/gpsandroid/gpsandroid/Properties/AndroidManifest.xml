@@ -1,6 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="com.companyname.gpsandroid">
-	<uses-sdk android:minSdkVersion="16" />
-	<application android:label="gpsandroid">
+	<uses-sdk android:minSdkVersion="16" android:targetSdkVersion="19" />
+	<application android:label="gpsandroid" android:icon="@drawable/icon">
+	@android:style/Theme.Material.Light
 	</application>
+	<uses-permission android:name="android.permission.LOCATION_HARDWARE" />
+	<uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
 </manifest>
