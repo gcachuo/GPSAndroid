@@ -9,11 +9,11 @@ session_start();
 ?>
 <html>
 <head>
-    <title>GPS Android</title>
+    <title>El Merodeador</title>
     <?php include "scripts.php" ?>
 </head>
 <body>
-<h3>GPS Android</h3>
+<h3>El Merodeador</h3>
 
 <?php
 
